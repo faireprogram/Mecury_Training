@@ -9,13 +9,12 @@
 </head>
 
 <body ng-app="main">
-    <!--    <form method="post" action="/api/user">
+<!--   <form method="post" action="/api/user">
         <input name="firstName">
         <input name="lastName">
         <button type="submit">Submit</button>
     </form>
 -->
-
     <div ng-controller="LoginCtrl">
         <form class="form-inline" ng-show="! username">
             <div class="form-group">
@@ -29,7 +28,10 @@
             <button ng-click="signup(user)">Sign Up</button>
             <button ng-click="login(user)">Login</button>
         </form>
-        <div ng-show="!!username">Welcome, {{username}} !</div>
+        <div ng-show="!!username">
+                Welcome, {{username}} !
+                <button ng-click="loginout()">Logout</button>
+        </div>
     </div>
 
     <div class="container" ng-controller="UserCtrl">

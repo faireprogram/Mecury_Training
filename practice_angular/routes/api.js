@@ -6,7 +6,7 @@ var db = MongoClient.connect('mongodb://localhost/test');
 
 /* GET home page. */
 router.get('/user', function(req, res, next) {
-    console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    console.log('Post /user XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     db.then(function(db) {
         return db.collection('customer').find().toArray();
     }).then(res.json.bind(res)).catch(function(err) {
@@ -17,12 +17,13 @@ router.get('/user', function(req, res, next) {
 });
 
 router.post('/user', function(req, res, next) {
+    console.log('Get /user XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     var user = req.body;
     console.log(user);
     db.then(function(db) {
         return db.collection('customer').insert(user);
     }).then(function() {
-        console.log("req.xhr", req);
+        // console.log("req.xhr", req);
         if (req.xhr) {
             console.log(user);
             res.json(user);
