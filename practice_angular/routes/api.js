@@ -22,8 +22,13 @@ router.post('/user', function(req, res, next) {
     db.then(function(db) {
         return db.collection('customer').insert(user);
     }).then(function() {
-        console.log(user);
-        res.json(user);
+        console.log("req.xhr", req);
+        if (req.xhr) {
+            console.log(user);
+            res.json(user);
+        } else {
+            res.redirect("/");
+        }
     }).catch(function(err) {
         console.log(err);
         next(err);
@@ -36,7 +41,9 @@ router.delete('/user/:userId', function(req, res, next) {
     var userid = ObjectId(req.params.userId);
     console.log('delete Id', userid);
     db.then(function(db) {
-        return db.collection('customer').remove({_id: userid});
+        return db.collection('customer').remove({
+            _id: userid
+        });
     }).then(res.json.bind(res)).catch(function(err) {
         console.log(err);
         next(err);
@@ -51,7 +58,9 @@ router.put('/user', function(req, res, next) {
     delete user._id;
     console.log('UPDATE ', user);
     db.then(function(db) {
-        return db.collection('customer').update({_id: ObjectId(uid)}, user);
+        return db.collection('customer').update({
+            _id: ObjectId(uid)
+        }, user);
     }).then(function() {
         user._id = uid;
         res.json(user);
@@ -63,4 +72,3 @@ router.put('/user', function(req, res, next) {
 
 
 module.exports = router;
-

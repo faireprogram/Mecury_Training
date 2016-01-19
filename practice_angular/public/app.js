@@ -2,8 +2,10 @@
     'use strict';
 
     angular.module('main', [])
-        .controller('UserCtrl', ['$scope', '$http',
-            function($scope, $http) {
+        .controller('UserCtrl', ['$scope', '$http', '$location',
+            function($scope, $http, $location) {
+                $scope.url = $location.search();
+                console.log($scope.url);
                 $http.get('/api/user').success(function(data) {
                     $scope.users = {};
                     data.forEach(function(user) {
