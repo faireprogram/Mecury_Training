@@ -5,7 +5,8 @@
 #To Run Npm
 * npm install
 * npm install mongodb
-* * npm install mongodb
+* npm install express-session
+* npm install q
 
 #Run Server
 * nodemon bin/www
