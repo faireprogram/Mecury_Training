@@ -38,7 +38,6 @@ router.post('/', function(req, res, next) {
     //         next(err);
     //     });
 
-    debugger;
 
     var user = req.body;
     console.log('post user', user);
