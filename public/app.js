@@ -10,8 +10,15 @@
             self.logout = function() {
                 return $http.get('/api/login/logout')
             }
-        })
-        .controller('UserCtrl', function($scope, $http, $uibModal, LoginService) {
+        }).service('Util', function() {
+            var self = this;
+            self.uuid = function() {
+                function s4() {
+                  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+                }
+                return s4() + s4() + s4() + s4()  + s4();
+            }
+        }).controller('UserCtrl', function($scope, $http, $uibModal, LoginService) {
             var self = this;
 
             LoginService.getUser().success(function(data) {
@@ -65,6 +72,17 @@
                     self.username = data.username
                 })
             };
+
+            self.openSignUpForm = function() {
+                LoginService.signupModal = $uibModal.open({
+                    templateUrl: 'signup.html',
+                    controller: 'LoginCtrl',
+                });
+                LoginService.signupModal.result.then(function(data){
+                    self.username = data.username
+                })
+            };
+
         });
 
 })()

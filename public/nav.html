@@ -4,6 +4,7 @@
             <li>
                 <a>
                     <button ng-click="user.openLoginForm()" ng-show="!user.username">Login</button>
+                    <button ng-click="user.openSignUpForm()" ng-show="!user.username">SignUp</button>
                     <span ng-show="user.username">
                         Welcome {{user.username}}!
                         <button class="btn btn-warning" ng-click="user.logout()">Logout</button>

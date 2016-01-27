@@ -3,12 +3,21 @@
     'use strict';
 
     angular.module('main')
-        .controller('LoginCtrl', ['$scope', '$http', 'LoginService',
-            function(scope, $http, LoginService) {
+        .controller('LoginCtrl', ['$scope', '$http', 'LoginService', 'Util',
+            function(scope, $http, LoginService, Util) {
 
                 scope.signup = function(user) {
+                    var verify = {
+                        status: false,
+                        activeid: Util.uuid()
+                    };
+                    user.verify = verify;
                     $http.post('/api/login', user).success(function(user) {
-                        scope.username = user.name;
+                        if (user.username) {
+                            LoginService.signupModal.close({
+                                username: user.username
+                            });
+                        }
                     });
                 };
 
@@ -16,8 +25,9 @@
                     user.isLogin = true;
                     $http.post('/api/login', user).success(function(info) {
                         if (info.status) {
-                            scope.username = user.name;
-                            LoginService.loginModal.close({username: user.name});
+                            LoginService.loginModal.close({
+                                username: info.username
+                            });
                         }
                         // TODO: show error message in login modal
                     });
