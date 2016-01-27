@@ -18,6 +18,13 @@
                 }
                 return s4() + s4() + s4() + s4()  + s4();
             }
+            self.status = function(st) {
+                if(st) {
+                    return "Activated";
+                } else {
+                    return "UnActivate";
+                }
+            }
         }).controller('UserCtrl', function($scope, $http, $uibModal, LoginService) {
             var self = this;
 
@@ -25,6 +32,7 @@
                 // if use then, the username should be like
                 // data.data.username
                 self.username = data.username;
+                self.verify = data.verify;
             })
 
             self.logout = function() {

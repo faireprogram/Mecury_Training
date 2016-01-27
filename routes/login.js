@@ -93,7 +93,8 @@ router.get('/', function(req, res, next) {
 
     if (req.user) {
         res.json({
-            username: req.user.username
+            username: req.user.username,
+            verify: req.user.verify.status
         });
     } else {
         res.json({});
