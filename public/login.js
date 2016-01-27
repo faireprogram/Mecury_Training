@@ -15,7 +15,8 @@
                     $http.post('/api/login', user).success(function(user) {
                         if (user.username) {
                             LoginService.signupModal.close({
-                                username: user.username
+                                username: user.username,
+                                verify: user.verify
                             });
                         }
                     });
@@ -26,7 +27,9 @@
                     $http.post('/api/login', user).success(function(info) {
                         if (info.status) {
                             LoginService.loginModal.close({
-                                username: info.username
+                                username: info.username,
+                                verify: info.verify
+
                             });
                         }
                         // TODO: show error message in login modal

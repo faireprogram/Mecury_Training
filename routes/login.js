@@ -75,6 +75,7 @@ router.post('/', function(req, res, next) {
                 }).exec(function(err, person) {
                     res.json({
                         username: person.username,
+                        verify: person.verify.status,
                         status: true
                     });
                 });

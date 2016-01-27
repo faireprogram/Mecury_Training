@@ -70,6 +70,11 @@
                 });
                 LoginService.loginModal.result.then(function(data){
                     self.username = data.username
+                    if(data.verify) {
+                        self.activeStatus = "Activated";
+                    } else {
+                        self.activeStatus = "UnActivate";
+                    }
                 })
             };
 
@@ -80,6 +85,12 @@
                 });
                 LoginService.signupModal.result.then(function(data){
                     self.username = data.username
+                    if(data.verify) {
+                        self.activeStatus = "Activated";
+                    } else {
+                        self.activeStatus = "UnActivate";
+                    }
+
                 })
             };
 
