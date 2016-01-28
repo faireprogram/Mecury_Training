@@ -14,25 +14,25 @@
             var self = this;
             self.uuid = function() {
                 function s4() {
-                  return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+                    return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
                 }
-                return s4() + s4() + s4() + s4()  + s4();
+                return s4() + s4() + s4() + s4() + s4();
             }
             self.status = function(st) {
-                if(st) {
+                if (st) {
                     return "Activated";
                 } else {
                     return "UnActivate";
                 }
             }
-        }).controller('UserCtrl', function($scope, $http, $uibModal, LoginService) {
+        }).controller('UserCtrl', function($scope, $http, $uibModal, LoginService, Util) {
             var self = this;
 
             LoginService.getUser().success(function(data) {
                 // if use then, the username should be like
                 // data.data.username
                 self.username = data.username;
-                self.verify = data.verify;
+                self.activeStatus = Util.status(data.verify);
             })
 
             self.logout = function() {
@@ -76,14 +76,10 @@
                     templateUrl: 'login.html',
                     controller: 'LoginCtrl',
                 });
-                LoginService.loginModal.result.then(function(data){
+                LoginService.loginModal.result.then(function(data) {
                     self.username = data.username
-                    if(data.verify) {
-                        self.activeStatus = "Activated";
-                    } else {
-                        self.activeStatus = "UnActivate";
-                    }
-                })
+                    self.activeStatus = Util.status(data.verify);
+                });
             };
 
             self.openSignUpForm = function() {
@@ -91,14 +87,9 @@
                     templateUrl: 'signup.html',
                     controller: 'LoginCtrl',
                 });
-                LoginService.signupModal.result.then(function(data){
+                LoginService.signupModal.result.then(function(data) {
                     self.username = data.username
-                    if(data.verify) {
-                        self.activeStatus = "Activated";
-                    } else {
-                        self.activeStatus = "UnActivate";
-                    }
-
+                    self.activeStatus = Util.status(data.verify);
                 })
             };
 

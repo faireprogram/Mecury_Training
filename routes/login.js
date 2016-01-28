@@ -4,7 +4,7 @@ var db = require('mongodb').MongoClient.connect('mongodb://localhost/test')
 var Q = require('q')
 var passport = require('passport');
 var Account = require('../models/account.js');
-
+var mail = require('../email/mail.js');
 router.post('/', function(req, res, next) {
 
     // delete user.isLogin;
@@ -53,7 +53,7 @@ router.post('/', function(req, res, next) {
             }),
             user.password,
             function(err, account) {
-                console.log('after save', err, account);
+                mail.sendMail(account.email, 'http://localhost:8090/api/login/active/' + account.verify.activeid);
 
                 if (err) {
                     res.json({});
@@ -66,8 +66,10 @@ router.post('/', function(req, res, next) {
                     });
                 }
             });
-    } else {
+    } else { 
+// debugger
         passport.authenticate('local')(req, res, function(err) {
+            console.log("zzzzzzzzzzzz");
             if (!err) {
                 Account.findOne({
                     email: user.email
@@ -109,12 +111,34 @@ router.get('/logout', function(req, res, next) {
 });
 
 router.get('/active/:activeid', function(req, res, next) {
-    debugger
+    // debugger
     var activeid = req.params.activeid;
-    var query = {'verify.activeid': activeid};
-    Account.update(query, {$set: {'verify.status': true}}, {multi: true}, function(err, numAffected) {
-        console.log(numAffected);        
-    }) 
+    var query = {
+        'verify.activeid': activeid
+    };
+    Account.findOne(query).exec(function(err, person) {
+        //IF the person is find, and the status is false, then
+        //try to set its status 
+        if (person && !person.verify.status) {
+            Account.update(query, {
+                $set: {
+                    'verify.status': true
+                }
+            }, {
+                multi: true
+            }, function(err, numAffected) {
+                console.log(numAffected);
+                if (!err) {
+                    res.redirect('/');
+                }
+            });
+        } else {
+            res.json({
+                message: "invalid url"
+            })
+        }
+
+    })
 });
 
 module.exports = router;
